@@ -6,18 +6,86 @@ public class PlayerController2 : MonoBehaviour
 {
     [SerializeField] Transform tf_Crosshair;
     [SerializeField] Transform tf_Cam;
-
+    [SerializeField] Vector2 camBoundary;
+    [SerializeField] float sightMoveSpeed;
     [SerializeField] float sightSensivitity;
     [SerializeField] float lookLimitX;
     [SerializeField] float lookLimitY;
+
     float currentAngleX;
     float currentAngleY;
 
+    [SerializeField] GameObject go_NotCamDown;
+    [SerializeField] GameObject go_NotCamUp;
+    [SerializeField] GameObject go_NotCamLeft;
+    [SerializeField] GameObject go_NotCamRight;
+
+    float originPosY;
+
+
+    void Start()
+    {
+        originPosY = tf_Cam.localPosition.y;
+    }
 
     void Update()
     {
         CrosshairMoving();
         ViewMoving();
+        KeyViewMoving();
+        CameraLimit();
+        NotCamUI();
+    }
+
+    void NotCamUI()
+    {
+        go_NotCamDown.SetActive(false);
+        go_NotCamUp.SetActive(false);
+        go_NotCamLeft.SetActive(false);
+        go_NotCamRight.SetActive(false);
+
+        if (currentAngleY >= lookLimitX)
+            go_NotCamRight.SetActive(true);
+        else if (currentAngleY <= -lookLimitX)
+            go_NotCamLeft.SetActive(true);
+
+        if (currentAngleX <= -lookLimitY)
+            go_NotCamUp.SetActive(true);
+        else if (currentAngleX >= lookLimitY)
+            go_NotCamDown.SetActive(true);
+    }
+
+    void CameraLimit()
+    {
+        if (tf_Cam.localPosition.x >= camBoundary.x)
+            tf_Cam.localPosition = new Vector3(camBoundary.x, tf_Cam.localPosition.y, tf_Cam.localPosition.z);
+        else if (tf_Cam.localPosition.x <= -camBoundary.x)
+            tf_Cam.localPosition = new Vector3(-camBoundary.x, tf_Cam.localPosition.y, tf_Cam.localPosition.z);
+
+        if (tf_Cam.localPosition.y >= 1+camBoundary.y)
+            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, originPosY + camBoundary.y, tf_Cam.localPosition.z);
+        else if (tf_Cam.localPosition.y <= 1 - camBoundary.y)
+            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, originPosY - camBoundary.y, tf_Cam.localPosition.z);
+    }
+
+    void KeyViewMoving()
+    {
+        if (Input.GetAxisRaw("Horizontal") != 0)
+        {
+            currentAngleY += sightSensivitity * Input.GetAxisRaw("Horizontal");
+            currentAngleY = Mathf.Clamp(currentAngleY, -lookLimitX, lookLimitX);
+
+            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x + sightMoveSpeed * Input.GetAxisRaw("Horizontal"),tf_Cam.localPosition.y,tf_Cam.localPosition.z);
+        }
+        if (Input.GetAxisRaw("Vertical") != 0)
+        {
+            currentAngleX += sightSensivitity * -Input.GetAxisRaw("Vertical");
+            currentAngleX = Mathf.Clamp(currentAngleX, -lookLimitY, lookLimitY);
+
+            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, tf_Cam.localPosition.y + sightMoveSpeed * Input.GetAxisRaw("Vertical"), tf_Cam.localPosition.z);
+        }
+
+        tf_Cam.localEulerAngles = new Vector3(currentAngleX, currentAngleY, tf_Cam.localEulerAngles.z);
     }
 
     void CrosshairMoving()
@@ -39,12 +107,18 @@ public class PlayerController2 : MonoBehaviour
         {
             currentAngleY += (tf_Crosshair.localPosition.x > 0) ? sightSensivitity : -sightSensivitity;
             currentAngleY = Mathf.Clamp(currentAngleY, -lookLimitX, lookLimitX);
+
+            float t_applySpeed = (tf_Crosshair.localPosition.x > 0) ? sightMoveSpeed : -sightMoveSpeed;
+            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x + t_applySpeed, tf_Cam.localPosition.y, tf_Cam.localPosition.z);
         }
 
         if (tf_Crosshair.localPosition.y > (Screen.height / 2 - 100) || tf_Crosshair.localPosition.y < (-Screen.height / 2 + 100))
         {
             currentAngleX += (tf_Crosshair.localPosition.y > 0) ? -sightSensivitity : sightSensivitity;
             currentAngleX = Mathf.Clamp(currentAngleX, -lookLimitY, lookLimitY);
+
+            float t_applySpeed = (tf_Crosshair.localPosition.y > 0) ? sightMoveSpeed : -sightMoveSpeed;
+            tf_Cam.localPosition = new Vector3(tf_Cam.localPosition.x, tf_Cam.localPosition.y + t_applySpeed, tf_Cam.localPosition.z);
         }
 
         tf_Cam.localEulerAngles = new Vector3(currentAngleX, currentAngleY, tf_Cam.localEulerAngles.z);
