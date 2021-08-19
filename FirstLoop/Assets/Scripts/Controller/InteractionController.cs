@@ -26,13 +26,15 @@ public class InteractionController : MonoBehaviour
 
     DialogueManager theDM;
 
-    public void HideUI()
-    {
-        go_Crosshair.SetActive(false);
-        go_Cursor.SetActive(false);
-        go_TargetNameBar.SetActive(false);
-    }
 
+    public void SettingUI(bool p_flag)
+    {
+        go_Crosshair.SetActive(p_flag);
+        go_Cursor.SetActive(p_flag);
+        go_TargetNameBar.SetActive(p_flag);
+
+        isInteract = !p_flag;
+    }
 
     private void Start()
     {
@@ -194,7 +196,7 @@ public class InteractionController : MonoBehaviour
     {
         yield return new WaitUntil(()=>QuestionEffect.isCollider);
         QuestionEffect.isCollider = false;
-
-        theDM.ShowDialogue();
+        theDM.ShowDialogue(hitInfo.transform.GetComponent<InteractionEvent>().GetDialogue());
+        Debug.Log("InteractionController¿« WaitCollision Ω««‡µ ");
     }
 }
