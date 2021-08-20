@@ -7,6 +7,10 @@ public enum CameraType
 {
     ObjectFront,
     Reset,
+    FadeOut,
+    FadeIn,
+    FlashOut,
+    FlashIn,
 }
 
 [System.Serializable]   //인스펙터 창에서 커스텀한 내용을 띄움
@@ -21,6 +25,9 @@ public class Dialogue
 
     [HideInInspector]
     public string[] contexts;
+
+    [HideInInspector]
+    public string[] spriteName;
 }
 
 [System.Serializable]

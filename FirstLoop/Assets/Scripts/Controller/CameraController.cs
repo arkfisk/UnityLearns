@@ -9,6 +9,8 @@ public class CameraController : MonoBehaviour
     InteractionController theIC;
     PlayerController2 thePlayer;
 
+    Coroutine coroutine;
+
 
     private void Start()
     {
@@ -24,16 +26,20 @@ public class CameraController : MonoBehaviour
 
     public void CameraTargetting(Transform p_Target, float p_camSpeed = 0.1f, bool p_isReset = false, bool p_isFinish = false)
     {
-        StopAllCoroutines();
         if (!p_isReset)
         {
             if (p_Target != null)
             {
-                StartCoroutine(CameraTargettingCoroutine(p_Target, p_camSpeed));
+                StopAllCoroutines();
+                coroutine = StartCoroutine(CameraTargettingCoroutine(p_Target, p_camSpeed));
             }
         }
         else
         {
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
             StartCoroutine(CameraResetCoroutine(p_camSpeed, p_isFinish));
         }
 

@@ -21,11 +21,13 @@ public class DialogueParser : MonoBehaviour
 
             //Debug.Log(row[1]);
             List<string> contextList = new List<string>();
+            List<string> spriteList = new List<string>();
 
             do
             {
                 contextList.Add(row[2]); //대사 갯수만큼 반복문
                 //Debug.Log(row[2]);
+                spriteList.Add(row[3]);
 
                 if (++i < data.Length)
                 {
@@ -39,7 +41,7 @@ public class DialogueParser : MonoBehaviour
             while (row[0].ToString() == "");
 
             dialogue.contexts = contextList.ToArray(); //리스트를 배열로 바꿈
-
+            dialogue.spriteName = spriteList.ToArray();
             dialogueList.Add(dialogue);
         }
 

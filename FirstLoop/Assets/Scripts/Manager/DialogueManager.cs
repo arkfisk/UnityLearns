@@ -25,11 +25,16 @@ public class DialogueManager : MonoBehaviour
     InteractionController theIC;
     CameraController theCam;
 
+    SpriteManager theSpriteManager;
+    SplashManager theSplashManager;
+
 
     private void Start()
     {
         theIC = FindObjectOfType<InteractionController>();
         theCam = FindObjectOfType<CameraController>();
+        theSpriteManager = FindObjectOfType<SpriteManager>();
+        theSplashManager = FindObjectOfType<SplashManager>();
     }
 
     private void Update()
@@ -51,7 +56,7 @@ public class DialogueManager : MonoBehaviour
                         contextCount = 0;
                         if (++lineCount < dialogues.Length)
                         {
-                            CameraTargettingType();
+                            StartCoroutine(CameraTargettingType());
                         }
                         else
                         {
@@ -72,13 +77,29 @@ public class DialogueManager : MonoBehaviour
 
         dialogues = p_dialogues;
         theCam.CamOrignSetting();
-        CameraTargettingType();
+        StartCoroutine(CameraTargettingType());
     }
 
-    void CameraTargettingType()
+    IEnumerator CameraTargettingType()
     {
         switch (dialogues[lineCount].cameraType)
         {
+            case CameraType.FadeIn:
+                SettingUI(false);  SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(false, true));
+                yield return new WaitUntil(() => SplashManager.isFinished);
+                break;
+            case CameraType.FadeOut:
+                SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(false, true));
+                yield return new WaitUntil(() => SplashManager.isFinished);
+                break;
+            case CameraType.FlashIn:
+                SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(true, true));
+                yield return new WaitUntil(() => SplashManager.isFinished);
+                break;
+            case CameraType.FlashOut:
+                SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(true, true));
+                yield return new WaitUntil(() => SplashManager.isFinished);
+                break;
             case CameraType.ObjectFront: theCam.CameraTargetting(dialogues[lineCount].tf_Target);
                 break;
             case CameraType.Reset: theCam.CameraTargetting(null, 0.05f, true, false);
@@ -98,9 +119,19 @@ public class DialogueManager : MonoBehaviour
         SettingUI(false);
     }
 
+    void ChangeSprite()
+    {
+        if (dialogues[lineCount].spriteName[contextCount] != "")
+        {
+            StartCoroutine(theSpriteManager.SpriteChangeCoroutine
+                (dialogues[lineCount].tf_Target, dialogues[lineCount].spriteName[contextCount]));
+        }
+    }
+
     IEnumerator TypeWriter()
     {
         SettingUI(true);
+        ChangeSprite();
 
         string t_ReplaceText=dialogues[lineCount].contexts[contextCount];
         t_ReplaceText = t_ReplaceText.Replace("'", ",");
@@ -166,6 +197,10 @@ public class DialogueManager : MonoBehaviour
                 go_DialogueNameBar.SetActive(true);
                 txt_Name.text = dialogues[lineCount].name;
             }
+        }
+        else
+        {
+            go_DialogueNameBar.SetActive(false);
         }
     }
 }
