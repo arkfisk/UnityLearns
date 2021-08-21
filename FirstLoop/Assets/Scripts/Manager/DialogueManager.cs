@@ -27,6 +27,7 @@ public class DialogueManager : MonoBehaviour
 
     SpriteManager theSpriteManager;
     SplashManager theSplashManager;
+    CutsceneManager theCutSceneManager;
 
 
     private void Start()
@@ -35,6 +36,7 @@ public class DialogueManager : MonoBehaviour
         theCam = FindObjectOfType<CameraController>();
         theSpriteManager = FindObjectOfType<SpriteManager>();
         theSplashManager = FindObjectOfType<SplashManager>();
+        theCutSceneManager = FindObjectOfType<CutsceneManager>();
     }
 
     private void Update()
@@ -60,7 +62,7 @@ public class DialogueManager : MonoBehaviour
                         }
                         else
                         {
-                            EndDialogue();
+                            StartCoroutine(EndDialogue());
                         }
                     }
                 }
@@ -85,31 +87,48 @@ public class DialogueManager : MonoBehaviour
         switch (dialogues[lineCount].cameraType)
         {
             case CameraType.FadeIn:
-                SettingUI(false);  SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(false, true));
-                yield return new WaitUntil(() => SplashManager.isFinished);
+                SettingUI(false);  SplashManager.isfinished = false; StartCoroutine(theSplashManager.FadeIn(false, true));
+                yield return new WaitUntil(() => SplashManager.isfinished);
                 break;
             case CameraType.FadeOut:
-                SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(false, true));
-                yield return new WaitUntil(() => SplashManager.isFinished);
+                SettingUI(false); SplashManager.isfinished = false; StartCoroutine(theSplashManager.FadeOut(false, true));
+                yield return new WaitUntil(() => SplashManager.isfinished);
                 break;
             case CameraType.FlashIn:
-                SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeIn(true, true));
-                yield return new WaitUntil(() => SplashManager.isFinished);
+                SettingUI(false); SplashManager.isfinished = false; StartCoroutine(theSplashManager.FadeIn(true, true));
+                yield return new WaitUntil(() => SplashManager.isfinished);
                 break;
             case CameraType.FlashOut:
-                SettingUI(false); SplashManager.isFinished = false; StartCoroutine(theSplashManager.FadeOut(true, true));
-                yield return new WaitUntil(() => SplashManager.isFinished);
+                SettingUI(false); SplashManager.isfinished = false; StartCoroutine(theSplashManager.FadeOut(true, true));
+                yield return new WaitUntil(() => SplashManager.isfinished);
                 break;
             case CameraType.ObjectFront: theCam.CameraTargetting(dialogues[lineCount].tf_Target);
                 break;
             case CameraType.Reset: theCam.CameraTargetting(null, 0.05f, true, false);
                 break;
+            case CameraType.ShowCutScene:
+                SettingUI(false); CutsceneManager.isFinished = false;
+                StartCoroutine(theCutSceneManager.CutSceneCoroutine(dialogues[lineCount].spriteName[contextCount], true));
+                yield return new WaitUntil(() => CutsceneManager.isFinished);
+                break;
+            case CameraType.HideCutScene:
+                SettingUI(false); CutsceneManager.isFinished = false;
+                StartCoroutine(theCutSceneManager.CutSceneCoroutine(null, false));
+                yield return new WaitUntil(() => CutsceneManager.isFinished);
+                theCam.CameraTargetting(dialogues[lineCount].tf_Target);
+                break;
         }
         StartCoroutine(TypeWriter());
     }
 
-    void EndDialogue()
+    IEnumerator EndDialogue()
     {
+        if (theCutSceneManager.CheckCutScene())
+        {
+            CutsceneManager.isFinished = false;
+            StartCoroutine(theCutSceneManager.CutSceneCoroutine(null, false));
+            yield return new WaitUntil(() => CutsceneManager.isFinished);
+        }
         isDialogue = false;
         contextCount = 0;
         lineCount = 0;
@@ -121,10 +140,21 @@ public class DialogueManager : MonoBehaviour
 
     void ChangeSprite()
     {
-        if (dialogues[lineCount].spriteName[contextCount] != "")
+        if (dialogues[lineCount].tf_Target!=null)
         {
-            StartCoroutine(theSpriteManager.SpriteChangeCoroutine
-                (dialogues[lineCount].tf_Target, dialogues[lineCount].spriteName[contextCount]));
+            if (dialogues[lineCount].spriteName[contextCount] != "")
+            {
+                StartCoroutine(theSpriteManager.SpriteChangeCoroutine
+                    (dialogues[lineCount].tf_Target, dialogues[lineCount].spriteName[contextCount]));
+            }
+        }
+    }
+
+    void PlaySound()
+    {
+        if(dialogues[lineCount].VoiceName[contextCount] != "")
+        {
+            SoundManager.instance.PlaySound(dialogues[lineCount].VoiceName[contextCount], 2);
         }
     }
 
@@ -132,6 +162,7 @@ public class DialogueManager : MonoBehaviour
     {
         SettingUI(true);
         ChangeSprite();
+        PlaySound();
 
         string t_ReplaceText=dialogues[lineCount].contexts[contextCount];
         t_ReplaceText = t_ReplaceText.Replace("'", ",");
@@ -153,6 +184,12 @@ public class DialogueManager : MonoBehaviour
                     break;
                 case 'и╧':
                     t_white = false; t_yellow = false; t_cyan = true; t_ignore = true;
+                    break;
+                case 'ич': StartCoroutine(theSplashManager.Splash());
+                    SoundManager.instance.PlaySound("Emotion1", 1);  t_ignore = true;
+                    break;
+                case 'иш': StartCoroutine(theSplashManager.Splash());
+                    SoundManager.instance.PlaySound("Emotion2", 1); t_ignore = true;
                     break;
             }
 

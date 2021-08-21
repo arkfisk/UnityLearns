@@ -11,6 +11,8 @@ public enum CameraType
     FadeIn,
     FlashOut,
     FlashIn,
+    ShowCutScene,
+    HideCutScene,
 }
 
 [System.Serializable]   //인스펙터 창에서 커스텀한 내용을 띄움
@@ -28,6 +30,9 @@ public class Dialogue
 
     [HideInInspector]
     public string[] spriteName;
+
+    [HideInInspector]
+    public string[] VoiceName;
 }
 
 [System.Serializable]

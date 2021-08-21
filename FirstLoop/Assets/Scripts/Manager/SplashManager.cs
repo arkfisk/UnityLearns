@@ -13,8 +13,17 @@ public class SplashManager : MonoBehaviour
     [SerializeField] float fadeSpeed;
     [SerializeField] float fadeSlowSpeed;
 
-    public static bool isFinished = false;
+    public static bool isfinished = false;
 
+
+    public IEnumerator Splash()
+    {
+        isfinished = false;
+        StartCoroutine(FadeOut(true, false));
+        yield return new WaitUntil(() => isfinished);
+        isfinished=false;
+        StartCoroutine(FadeIn(true, false));
+    }
     
     public IEnumerator FadeOut(bool _isWhite, bool _isSlow)
     {
@@ -31,7 +40,7 @@ public class SplashManager : MonoBehaviour
             yield return null;
         }
 
-        isFinished = true;
+        isfinished = true;
     }
 
     public IEnumerator FadeIn(bool _isWhite, bool _isSlow)
@@ -49,6 +58,6 @@ public class SplashManager : MonoBehaviour
             yield return null;
         }
 
-        isFinished = true;
+        isfinished = true;
     }
 }
