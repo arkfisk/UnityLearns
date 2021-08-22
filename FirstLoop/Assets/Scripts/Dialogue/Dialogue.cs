@@ -13,6 +13,16 @@ public enum CameraType
     FlashIn,
     ShowCutScene,
     HideCutScene,
+    AppearSlideCG,
+    DisappearSlideCG,
+    ChangeSlideCG,
+}
+
+public enum AppearType
+{
+    None,
+    Appear,
+    Disappear,
 }
 
 [System.Serializable]   //인스펙터 창에서 커스텀한 내용을 띄움
@@ -42,4 +52,9 @@ public class DialogueEvent
 
     public Vector2 line;
     public Dialogue[] dialogues;
+
+    [Space]
+    public AppearType appearType;
+    public GameObject[] go_Target;
+
 }

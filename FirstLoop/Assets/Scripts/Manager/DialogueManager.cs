@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static bool isWaiting = false;
+
     [SerializeField] GameObject go_DialogueBar;
     [SerializeField] GameObject go_DialogueNameBar;
 
@@ -22,13 +24,32 @@ public class DialogueManager : MonoBehaviour
     int lineCount = 0;
     int contextCount = 0;
 
+    //이벤트 끝나면 등장시킬(퇴장시킬) 오브젝트들
+    GameObject[] go_Objects;
+    byte appearTypeNumber;
+    const byte NONE = 0, APPEAR = 1, DISAPPEAR = 2;
+
+    public void SetAppearObjects(GameObject[] p_Targets)
+    {
+        go_Objects = p_Targets;
+        appearTypeNumber = APPEAR;
+    }
+
+    public void SetDisappearObjects(GameObject[] p_Targets)
+    {
+        go_Objects = p_Targets;
+        appearTypeNumber = DISAPPEAR;
+    }
+
+
     InteractionController theIC;
     CameraController theCam;
 
     SpriteManager theSpriteManager;
     SplashManager theSplashManager;
     CutsceneManager theCutSceneManager;
-
+    SlideManager theSlideManager;
+    
 
     private void Start()
     {
@@ -37,6 +58,7 @@ public class DialogueManager : MonoBehaviour
         theSpriteManager = FindObjectOfType<SpriteManager>();
         theSplashManager = FindObjectOfType<SplashManager>();
         theCutSceneManager = FindObjectOfType<CutsceneManager>();
+        theSlideManager = FindObjectOfType<SlideManager>();
     }
 
     private void Update()
@@ -76,8 +98,18 @@ public class DialogueManager : MonoBehaviour
         txt_Dialogue.text = "";
         txt_Name.text = "";
         theIC.SettingUI(false);
-
         dialogues = p_dialogues;
+
+        StartCoroutine(StartDialogue());
+
+    }
+
+    IEnumerator StartDialogue()
+    {
+        if (isWaiting)
+            yield return new WaitForSeconds(0.5f);
+
+        isWaiting = false;
         theCam.CamOrignSetting();
         StartCoroutine(CameraTargettingType());
     }
@@ -117,8 +149,36 @@ public class DialogueManager : MonoBehaviour
                 yield return new WaitUntil(() => CutsceneManager.isFinished);
                 theCam.CameraTargetting(dialogues[lineCount].tf_Target);
                 break;
+            case CameraType.AppearSlideCG:
+                SlideManager.isFinished = false;
+                StartCoroutine(theSlideManager.AppearSlide(SplitSlideCGName()));
+                yield return new WaitUntil(() => SlideManager.isFinished);
+                theCam.CameraTargetting(dialogues[lineCount].tf_Target);
+                break;
+            case CameraType.DisappearSlideCG:
+                SlideManager.isFinished = false;
+                StartCoroutine(theSlideManager.DisappearSlide());
+                yield return new WaitUntil(() => SlideManager.isFinished);
+                theCam.CameraTargetting(dialogues[lineCount].tf_Target);
+                break;
+            case CameraType.ChangeSlideCG:
+                SlideManager.isFinished = false;
+                StartCoroutine(theSlideManager.ChangeSlide(SplitSlideCGName()));
+                yield return new WaitUntil(() => SlideManager.isFinished);
+                theCam.CameraTargetting(dialogues[lineCount].tf_Target);
+                break;
         }
         StartCoroutine(TypeWriter());
+    }
+
+    string SplitSlideCGName()
+    {
+        string t_Text = dialogues[lineCount].spriteName[contextCount];
+        string[] t_Array = t_Text.Split(new char[] { '/' });
+        if (t_Array.Length <= 1)
+            return t_Array[0];
+        else
+            return t_Array[1];
     }
 
     IEnumerator EndDialogue()
@@ -129,6 +189,11 @@ public class DialogueManager : MonoBehaviour
             StartCoroutine(theCutSceneManager.CutSceneCoroutine(null, false));
             yield return new WaitUntil(() => CutsceneManager.isFinished);
         }
+
+        AppearOrDisappearObjects();
+
+        yield return new WaitUntil(() => SpinSprite.isFinished);
+
         isDialogue = false;
         contextCount = 0;
         lineCount = 0;
@@ -138,6 +203,27 @@ public class DialogueManager : MonoBehaviour
         SettingUI(false);
     }
 
+    void AppearOrDisappearObjects()
+    {
+        if (go_Objects != null)
+        {
+            SpinSprite.isFinished = false;
+            for (int i = 0; i < go_Objects.Length; i++)
+            {
+                if (appearTypeNumber == APPEAR)
+                {
+                    go_Objects[i].SetActive(true);
+                    StartCoroutine(go_Objects[i].GetComponent<SpinSprite>().SetAppearOrDiasppear(true));
+                }
+
+                else if (appearTypeNumber == DISAPPEAR)
+                    StartCoroutine(go_Objects[i].GetComponent<SpinSprite>().SetAppearOrDiasppear(false));
+            }
+        }
+        go_Objects = null;
+        appearTypeNumber = NONE;
+    }
+
     void ChangeSprite()
     {
         if (dialogues[lineCount].tf_Target!=null)
@@ -145,7 +231,7 @@ public class DialogueManager : MonoBehaviour
             if (dialogues[lineCount].spriteName[contextCount] != "")
             {
                 StartCoroutine(theSpriteManager.SpriteChangeCoroutine
-                    (dialogues[lineCount].tf_Target, dialogues[lineCount].spriteName[contextCount]));
+                    (dialogues[lineCount].tf_Target, dialogues[lineCount].spriteName[contextCount].Split(new char[] { '/' })[0]));
             }
         }
     }

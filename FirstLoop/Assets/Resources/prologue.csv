@@ -1,8 +1,8 @@
-ID,Character Name,Context,Sprite Name,Voide Name,Comment
-1,봉란,①안녕' 내 이름은 ⓨ봉란ⓦ이야.,Bongran0,bongran00,봉란 자기소개
+ID,Character Name,Context,Sprite Name/Slide CG Name,Voide Name,Comment
+1,봉란,①안녕' 내 이름은 ⓨ봉란ⓦ이야.,Bongran0/MenuPad,bongran00,AppearSlideCG
 ,,너의  이름은 뭐야?,Bongran1,,
-2,주인공,반가워' 봉란. 내 이름은 \n주인공이야.,,,
-3,봉란,그렇구나.,,bongran01,
+2,주인공,반가워' 봉란. 내 이름은 \n주인공이야.,MenuPad,,ChangeSlideCG
+3,봉란,그렇구나.,,bongran01,DisppearSlideCG
 ,,①그런데 저게 뭔지 알 수 있겠어?,Bongran0,,
 4,,ⓒ...라며 봉란이가 가리킨 손가락 끝에는......,,,
 5,,ⓒ괴상한 실험도구와 피처럼 느껴지는\n붉은색의 액체가 그 안에 담겨있었다.,CG 2F_Biological_2,,

@@ -31,7 +31,19 @@ public class InteractionController : MonoBehaviour
     {
         go_Crosshair.SetActive(p_flag);
         go_Cursor.SetActive(p_flag);
-        go_TargetNameBar.SetActive(p_flag);
+        if (!p_flag)
+        {
+            StopCoroutine("Interaction");
+            Color color = img_Interaction.color;
+            color.a = 0;
+            img_Interaction.color = color;
+            go_TargetNameBar.SetActive(false);
+        }
+        else
+        {
+            go_NormalCrosshair.SetActive(true);
+            go_InteractiveCrosshair.SetActive(false);
+        }
 
         isInteract = !p_flag;
     }
@@ -196,7 +208,14 @@ public class InteractionController : MonoBehaviour
     {
         yield return new WaitUntil(()=>QuestionEffect.isCollider);
         QuestionEffect.isCollider = false;
-        theDM.ShowDialogue(hitInfo.transform.GetComponent<InteractionEvent>().GetDialogue());
-        Debug.Log("InteractionController¿« WaitCollision Ω««‡µ ");
+
+        yield return new WaitForSeconds(0.5f);
+
+        InteractionEvent t_Event = hitInfo.transform.GetComponent<InteractionEvent>();
+
+        if (t_Event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(t_Event.GetTargets());
+        else if (t_Event.GetAppearType() == AppearType.Disappear) theDM.SetDisappearObjects(t_Event.GetTargets());
+        theDM.ShowDialogue(t_Event.GetDialogue());
+
     }
 }
