@@ -76,8 +76,8 @@ public class CameraController : MonoBehaviour
         if (p_isFinish)
         {
             //모든 대화가 끝났으면 리셋
-            theIC.SettingUI(true);
             thePlayer.Reset();
+            InteractionController.isInteract = false;
         }
     }
 }

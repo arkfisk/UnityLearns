@@ -33,6 +33,11 @@ public class InteractionEvent : MonoBehaviour
         return dialogueEvent.go_Target;
     }
 
+    public GameObject GetNextEvent()
+    {
+        return dialogueEvent.go_NextEvent;
+    }
+
     private void Update()
     {
         if(isAutoEvent && DatabaseManager.isFinish)
@@ -41,6 +46,7 @@ public class InteractionEvent : MonoBehaviour
             DialogueManager.isWaiting = true;
             if (GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(GetTargets());
             else if (GetAppearType() == AppearType.Disappear) theDM.SetDisappearObjects(GetTargets());
+            theDM.SetNextEvent(GetNextEvent());
             theDM.ShowDialogue(GetDialogue());
 
             gameObject.SetActive(false);

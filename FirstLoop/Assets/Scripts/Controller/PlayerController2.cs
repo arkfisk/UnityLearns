@@ -4,6 +4,21 @@ using UnityEngine;
 
 public class PlayerController2 : MonoBehaviour
 {
+    public static PlayerController2 instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     [SerializeField] Transform tf_Crosshair;
     [SerializeField] Transform tf_Cam;
     [SerializeField] Vector2 camBoundary;
