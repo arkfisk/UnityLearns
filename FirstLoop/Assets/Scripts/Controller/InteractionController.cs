@@ -13,6 +13,7 @@ public class InteractionController : MonoBehaviour
     [SerializeField] GameObject go_InteractiveCrosshair;
     [SerializeField] GameObject go_Crosshair;
     [SerializeField] GameObject go_Cursor;
+    [SerializeField] GameObject go_FieldCursor;
     [SerializeField] GameObject go_TargetNameBar;
     [SerializeField] Text txt_TargetName;
 
@@ -30,7 +31,6 @@ public class InteractionController : MonoBehaviour
     public void SettingUI(bool p_flag)
     {
         go_Crosshair.SetActive(p_flag);
-        go_Cursor.SetActive(p_flag);
         if (!p_flag)
         {
             StopCoroutine("Interaction");
@@ -38,9 +38,16 @@ public class InteractionController : MonoBehaviour
             color.a = 0;
             img_Interaction.color = color;
             go_TargetNameBar.SetActive(false);
+            go_Cursor.SetActive(false);
+            go_FieldCursor.SetActive(false);
         }
         else
         {
+            if (CameraController.onlyView)
+                go_Cursor.SetActive(true);
+            else
+                go_FieldCursor.SetActive(true);
+
             go_NormalCrosshair.SetActive(true);
             go_InteractiveCrosshair.SetActive(false);
         }
@@ -65,18 +72,30 @@ public class InteractionController : MonoBehaviour
 
     void CheckObject()
     {
-        Vector3 t_MousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
-
-        //화면의 2D좌표를 실제 마우스 좌표로 환산
-        if(Physics.Raycast(cam.ScreenPointToRay(t_MousePos), out hitInfo, 100))
+        if (CameraController.onlyView)
         {
-            //Debug.Log(hitInfo.transform.name);
+            Vector3 t_MousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0);
 
-            Contact();
+            //화면의 2D좌표를 실제 마우스 좌표로 환산
+            if (Physics.Raycast(cam.ScreenPointToRay(t_MousePos), out hitInfo, 100))
+            {
+                Contact();
+            }
+            else
+            {
+                NotContact();
+            }
         }
         else
         {
-            NotContact();
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, 2)) //마우스와 크로스헤어 시점을 일치
+            {
+                Contact();
+            }
+            else
+            {
+                NotContact();
+            }
         }
     }
 
@@ -93,11 +112,14 @@ public class InteractionController : MonoBehaviour
 
                 go_InteractiveCrosshair.SetActive(true);
                 go_NormalCrosshair.SetActive(false);
-                StopCoroutine("InteractionEffect");
-                StopCoroutine("Interaction");
-                StartCoroutine("Interaction", true);
-                StartCoroutine("InteractionEffect");
-                //Debug.Log("인터랙션 코루틴 실행-페이드인");
+
+                if (!CameraController.onlyView)
+                {
+                    StopCoroutine("InteractionEffect");
+                    StopCoroutine("Interaction");
+                    StartCoroutine("Interaction", true);
+                    StartCoroutine("InteractionEffect");
+                }
             }
         }
         else
@@ -117,9 +139,11 @@ public class InteractionController : MonoBehaviour
             go_InteractiveCrosshair.SetActive(false);
             go_NormalCrosshair.SetActive(true);
 
-            StopCoroutine("Interaction");
-            StartCoroutine("Interaction", false);
-            //Debug.Log("인터랙션 코루틴 실행-페이드아웃");
+            if (!CameraController.onlyView)
+            {
+                StopCoroutine("Interaction");
+                StartCoroutine("Interaction", false);
+            }
         }
     }
 

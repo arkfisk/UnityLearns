@@ -10,6 +10,8 @@ public class DatabaseManager : MonoBehaviour
 
     Dictionary<int, Dialogue> dialogueDic = new Dictionary<int, Dialogue>();    //딕셔너리. 인덱스(int)를 입력하면 그에 맞는 대사(Dialogue)나 꺼내와짐
 
+    public bool[] eventFlags = new bool[100];
+
     public static bool isFinish = false;
 
 

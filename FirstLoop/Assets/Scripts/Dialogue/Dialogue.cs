@@ -46,9 +46,19 @@ public class Dialogue
 }
 
 [System.Serializable]
+public class EventTiming
+{
+    public int eventNum;
+    public int[] eventConditions;
+    public bool conditionFlag;
+    public int eventEndNum;
+}
+
+[System.Serializable]
 public class DialogueEvent
 {
     public string name;
+    public EventTiming eventTiming;
 
     public Vector2 line;
     public Dialogue[] dialogues;

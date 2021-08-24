@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class SpinSprite : MonoBehaviour
 {
-    [SerializeField] Transform tf_Target;
+    Transform tf_Target;
 
     bool spin = false;
 
     public static bool isFinished = true;
 
+
+    private void Start()
+    {
+        tf_Target = PlayerController2.instance.transform;
+    }
 
     private void Update()
     {

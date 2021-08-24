@@ -19,6 +19,13 @@ public class PlayerController2 : MonoBehaviour
         }
     }
 
+    [SerializeField] float walkSpeed;
+    [SerializeField] float runSpeed;
+    float applySpeed;
+
+    [SerializeField] float fieldSensitivity;
+    [SerializeField] float fieldLookLimitX;
+
     [SerializeField] Transform tf_Crosshair;
     [SerializeField] Transform tf_Cam;
     [SerializeField] Vector2 camBoundary;
@@ -40,6 +47,7 @@ public class PlayerController2 : MonoBehaviour
 
     public void Reset()
     {
+        tf_Crosshair.localPosition = Vector3.zero;
         currentAngleX = 0;
         currentAngleY = 0;
     }
@@ -53,11 +61,56 @@ public class PlayerController2 : MonoBehaviour
     {
         if (!InteractionController.isInteract)
         {
-            CrosshairMoving();
-            ViewMoving();
-            KeyViewMoving();
-            CameraLimit();
-            NotCamUI();
+            if (CameraController.onlyView)
+            {
+                CrosshairMoving();
+                ViewMoving();
+                KeyViewMoving();
+                CameraLimit();
+                NotCamUI();
+            }
+            else
+            {
+                FieldMoving();
+                FieldLooking();
+            }
+        }
+
+    }
+
+    void FieldMoving()
+    {
+        if (Input.GetAxisRaw("Vertical") != 0 || Input.GetAxisRaw("Horizontal") != 0)
+        {
+            Vector3 t_Dir = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")).normalized;
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                applySpeed = runSpeed;
+            }
+            else
+            {
+                applySpeed = walkSpeed;
+            }
+
+            transform.Translate(t_Dir * applySpeed * Time.deltaTime, Space.Self);
+        }
+    }
+
+    void FieldLooking()
+    {
+        if(Input.GetAxisRaw("Mouse X") != 0)
+        {
+            float t_AngleY = Input.GetAxisRaw("Mouse X");
+            Vector3 t_Rot = new Vector3(0, t_AngleY * fieldSensitivity, 0);
+            transform.rotation = Quaternion.Euler(transform.localEulerAngles + t_Rot);
+        }
+        if(Input.GetAxisRaw("Mouse Y") != 0)
+        {
+            float t_AngleX = Input.GetAxisRaw("Mouse Y");
+            currentAngleX -= t_AngleX;  //y√‡ π›¿¸ ∂ßπÆø° ª©¡‹
+            currentAngleX = Mathf.Clamp(currentAngleX, -fieldLookLimitX, fieldLookLimitX);
+            tf_Cam.localEulerAngles = new Vector3(currentAngleX, 0, 0);
         }
     }
 

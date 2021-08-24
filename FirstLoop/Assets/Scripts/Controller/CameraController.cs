@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    public static bool onlyView = true;
+
     Vector3 originPos;
     Quaternion originRot;
     InteractionController theIC;
@@ -21,7 +23,10 @@ public class CameraController : MonoBehaviour
     public void CamOrignSetting()
     {
         originPos = transform.position;
-        originRot = Quaternion.Euler(0, 0, 0);
+        if (onlyView)
+            originRot = Quaternion.Euler(0, 0, 0);
+        else
+            originRot = transform.rotation;
     }
 
     public void CameraTargetting(Transform p_Target, float p_camSpeed = 0.1f, bool p_isReset = false, bool p_isFinish = false)
