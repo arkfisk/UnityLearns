@@ -243,7 +243,14 @@ public class InteractionController : MonoBehaviour
         }
         else
         {
-            TransferCall();
+            if (t_Event != null && t_Event.GetDialogue()!=null)
+            {
+                DialogueCall(t_Event);
+            }
+            else
+            {
+                TransferCall();
+            }
         }
     }
 
@@ -256,9 +263,12 @@ public class InteractionController : MonoBehaviour
 
     void DialogueCall(InteractionEvent p_event)
     {
-        theDM.SetNextEvent(p_event.GetNextEvent());
-        if (p_event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(p_event.GetTargets());
-        else if (p_event.GetAppearType() == AppearType.Disappear) theDM.SetDisappearObjects(p_event.GetTargets());
+        if (!DatabaseManager.instance.eventFlags[p_event.GetEventNumber()])
+        {
+            theDM.SetNextEvent(p_event.GetNextEvent());
+            if (p_event.GetAppearType() == AppearType.Appear) theDM.SetAppearObjects(p_event.GetTargets());
+            else if (p_event.GetAppearType() == AppearType.Disappear) theDM.SetDisappearObjects(p_event.GetTargets());
+        }
         theDM.ShowDialogue(p_event.GetDialogue());
     }
 }

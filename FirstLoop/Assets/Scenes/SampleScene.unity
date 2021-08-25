@@ -249,6 +249,7 @@ GameObject:
   - component: {fileID: 452701433}
   - component: {fileID: 452701432}
   - component: {fileID: 452701436}
+  - component: {fileID: 452701437}
   m_Layer: 0
   m_Name: Door1
   m_TagString: Interaction
@@ -363,6 +364,40 @@ MonoBehaviour:
   isOnlyView: 0
   sceneName: Collider
   locationName: Class1-1ToCollider1
+--- !u!114 &452701437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452701430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02771593622136644b0d723e4398e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAutoEvent: 0
+  dialogueEvent:
+  - name: "\uBB38 \uB2EB\uD798"
+    eventTiming:
+      eventNum: 500
+      eventConditions: 00000000
+      conditionFlag: 0
+      eventEndNum: 1
+    line: {x: 9, y: 9}
+    dialogues:
+    - cameraType: 0
+      tf_Target: {fileID: 0}
+      name: 
+      contexts: []
+      spriteName: []
+      VoiceName: []
+    lineB: {x: 0, y: 0}
+    dialoguesB: []
+    appearType: 0
+    go_Target: []
+    go_NextEvent: {fileID: 0}
+    isSame: 1
 --- !u!1 &490599027
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,7 +792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   csv_FileName: prologue
-  eventFlags: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  eventFlags: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &731389968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7915,7 +7950,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db1f38ebaa2798142ae6433c00a13112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tf_Target: {fileID: 1693126366}
 --- !u!114 &1379102245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8466,42 +8500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAutoEvent: 1
-  dialogueEvent:
-    name: "\uC790\uAE30\uC18C\uAC1C"
-    eventTiming:
-      eventNum: 0
-      eventConditions: 
-      conditionFlag: 0
-      eventEndNum: 0
-    line: {x: 1, y: 4}
-    dialogues:
-    - cameraType: 0
-      tf_Target: {fileID: 0}
-      name: 
-      contexts: []
-      spriteName: []
-      VoiceName: []
-    - cameraType: 0
-      tf_Target: {fileID: 0}
-      name: 
-      contexts: []
-      spriteName: []
-      VoiceName: []
-    - cameraType: 0
-      tf_Target: {fileID: 0}
-      name: 
-      contexts: []
-      spriteName: []
-      VoiceName: []
-    - cameraType: 0
-      tf_Target: {fileID: 0}
-      name: 
-      contexts: []
-      spriteName: []
-      VoiceName: []
-    appearType: 0
-    go_Target: []
-    go_NextEvent: {fileID: 0}
+  dialogueEvent: []
 --- !u!1 &1558811541
 GameObject:
   m_ObjectHideFlags: 0
@@ -9114,7 +9113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1694176481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9127,7 +9126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db1f38ebaa2798142ae6433c00a13112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tf_Target: {fileID: 1693126366}
 --- !u!114 &1694176482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14284,6 +14282,167 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &1766052573
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2353811224848380772, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_Name
+      value: BongRan2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380772, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.73
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380773, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.lineB.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.lineB.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.appearType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.go_NextEvent
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].name
+      value: "\uBD09\uB7801 \uC0C1\uD638\uC791\uC6A9 \uC804"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[1].name
+      value: "\uBD09\uB7801 \uC0C1\uD638\uC791\uC6A9 \uD6C4"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].line.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].line.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[1].line.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[1].line.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.go_Target.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.dialoguesB.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.go_Target.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].dialogues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].eventTiming.eventNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[1].dialogues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[1].eventTiming.eventNum
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].eventTiming.eventEndNum
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[1].eventTiming.eventEndNum
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[1].eventTiming.conditionFlag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].eventTiming.eventConditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[1].eventTiming.eventConditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380793, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: tf_Target
+      value: 
+      objectReference: {fileID: 1693126366}
+    - target: {fileID: 2353811224848380795, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: interactionName
+      value: "\uBD09\uB7802"
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
 --- !u!1 &1819540805
 GameObject:
   m_ObjectHideFlags: 0
@@ -15264,9 +15423,65 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.lineB.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.lineB.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.appearType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
       propertyPath: dialogueEvent.go_NextEvent
       value: 
-      objectReference: {fileID: 1510264698}
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].name
+      value: "\uBD09\uB780 \uC790\uAE30\uC18C\uAC1C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].line.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].line.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.go_Target.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.dialoguesB.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.go_Target.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].dialogues.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].eventTiming.eventNum
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].eventTiming.eventEndNum
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353811224848380792, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
+      propertyPath: dialogueEvent.Array.data[0].eventTiming.eventConditions.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2353811224848380793, guid: 27dc077d9f78dfb499804587433512a5, type: 3}
       propertyPath: tf_Target
       value: 
@@ -15327,6 +15542,10 @@ PrefabInstance:
     - target: {fileID: 3825658009346885070, guid: 73ac7ac77d8337e45895386b460ba97c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3825658010443605209, guid: 73ac7ac77d8337e45895386b460ba97c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3825658010554499199, guid: 73ac7ac77d8337e45895386b460ba97c, type: 3}
       propertyPath: dialogueEvent.dialogues.Array.data[0].tf_Target

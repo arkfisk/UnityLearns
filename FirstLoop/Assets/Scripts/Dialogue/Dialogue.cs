@@ -60,8 +60,13 @@ public class DialogueEvent
     public string name;
     public EventTiming eventTiming;
 
+    [Space]
     public Vector2 line;
     public Dialogue[] dialogues;
+
+    [Space]
+    public Vector2 lineB;
+    public Dialogue[] dialoguesB;
 
     [Space]
     public AppearType appearType;
@@ -70,4 +75,6 @@ public class DialogueEvent
     [Space]
     public GameObject go_NextEvent;
 
+
+    public bool isSame;
 }

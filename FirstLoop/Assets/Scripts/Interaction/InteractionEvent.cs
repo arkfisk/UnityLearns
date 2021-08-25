@@ -5,7 +5,8 @@ using UnityEngine;
 public class InteractionEvent : MonoBehaviour
 {
     [SerializeField] bool isAutoEvent = false;
-    [SerializeField] DialogueEvent dialogueEvent;
+    [SerializeField] DialogueEvent[] dialogueEvent;
+    int currentCount;
 
 
     private void Start()
@@ -18,19 +19,31 @@ public class InteractionEvent : MonoBehaviour
     bool CheckEvent()
     {
         bool t_Flag = true;
-        //등장 조건과 일치하지 않을 경우, 등장시키지 않음
-        for (int i = 0; i < dialogueEvent.eventTiming.eventConditions.Length; i++)
+
+        for (int x = 0; x < dialogueEvent.Length; x++)
         {
-            if (DatabaseManager.instance.eventFlags[dialogueEvent.eventTiming.eventConditions[i]] != dialogueEvent.eventTiming.conditionFlag)
+            t_Flag = true;
+
+            //등장 조건과 일치하지 않을 경우, 등장시키지 않음
+            for (int i = 0; i < dialogueEvent[x].eventTiming.eventConditions.Length; i++)
+            {
+                if (DatabaseManager.instance.eventFlags[dialogueEvent[x].eventTiming.eventConditions[i]] != dialogueEvent[x].eventTiming.conditionFlag)
+                {
+                    t_Flag = false;
+                    break;
+                }
+            }
+            //등장 조건과 관계 없이, 퇴장 조건과 일치할 겨우, 무조건 등장시키지 않음
+            if (DatabaseManager.instance.eventFlags[dialogueEvent[x].eventTiming.eventEndNum])
             {
                 t_Flag = false;
+            }
+
+            if (t_Flag)
+            {
+                currentCount = x;
                 break;
             }
-        }
-        //등장 조건과 관계 없이, 퇴장 조건과 일치할 겨우, 무조건 등장시키지 않음
-        if (DatabaseManager.instance.eventFlags[dialogueEvent.eventTiming.eventEndNum])
-        {
-            t_Flag = false;
         }
 
         return t_Flag;
@@ -38,33 +51,59 @@ public class InteractionEvent : MonoBehaviour
 
     public Dialogue[] GetDialogue()
     {
-        DatabaseManager.instance.eventFlags[dialogueEvent.eventTiming.eventNum] = true;
-        DialogueEvent t_DialogueEvent = new DialogueEvent();
-        t_DialogueEvent.dialogues = DatabaseManager.instance.GetDialogue((int)dialogueEvent.line.x, (int)dialogueEvent.line.y);
-
-        for (int i = 0; i < dialogueEvent.dialogues.Length; i++)
+        if (DatabaseManager.instance.eventFlags[dialogueEvent[currentCount].eventTiming.eventEndNum])
         {
-            t_DialogueEvent.dialogues[i].tf_Target = dialogueEvent.dialogues[i].tf_Target;
-            t_DialogueEvent.dialogues[i].cameraType = dialogueEvent.dialogues[i].cameraType;
+            return null;
         }
-        dialogueEvent.dialogues = t_DialogueEvent.dialogues;
 
-        return dialogueEvent.dialogues;
+        //상호작용 전 대화
+        if (!DatabaseManager.instance.eventFlags[dialogueEvent[currentCount].eventTiming.eventNum] || dialogueEvent[currentCount].isSame)
+        {
+            DatabaseManager.instance.eventFlags[dialogueEvent[currentCount].eventTiming.eventNum] = true;
+            dialogueEvent[currentCount].dialogues = SettingDialogue(dialogueEvent[currentCount].dialogues, (int)dialogueEvent[currentCount].line.x, (int)dialogueEvent[currentCount].line.y);
+
+            return dialogueEvent[currentCount].dialogues;
+        }
+        //상호작용 후 대화
+        else
+        {
+            dialogueEvent[currentCount].dialoguesB = SettingDialogue(dialogueEvent[currentCount].dialoguesB, (int)dialogueEvent[currentCount].lineB.x, (int)dialogueEvent[currentCount].lineB.y);
+
+            return dialogueEvent[currentCount].dialoguesB;
+        }
+    }
+
+    Dialogue[] SettingDialogue(Dialogue[] p_Dialogue, int p_lineX, int p_lineY)
+    {
+        Dialogue[] t_Dialogues = DatabaseManager.instance.GetDialogue(p_lineX, p_lineY);
+
+        for (int i = 0; i < dialogueEvent[currentCount].dialogues.Length; i++)
+        {
+            t_Dialogues[i].tf_Target = p_Dialogue[i].tf_Target;
+            t_Dialogues[i].cameraType = p_Dialogue[i].cameraType;
+        }
+        return t_Dialogues;
     }
 
     public AppearType GetAppearType()
     {
-        return dialogueEvent.appearType;
+        return dialogueEvent[currentCount].appearType;
     }
 
     public GameObject[] GetTargets()
     {
-        return dialogueEvent.go_Target;
+        return dialogueEvent[currentCount].go_Target;
     }
 
     public GameObject GetNextEvent()
     {
-        return dialogueEvent.go_NextEvent;
+        return dialogueEvent[currentCount].go_NextEvent;
+    }
+
+    public int GetEventNumber()
+    {
+        CheckEvent();
+        return dialogueEvent[currentCount].eventTiming.eventNum;
     }
 
     private void Update()
